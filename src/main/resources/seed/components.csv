@@ -1,0 +1,20 @@
+labRoomNo,name,category,totalQuantity,availableQuantity
+ECE-101,Resistor 1k Ohm,Passive Components,200,180
+ECE-101,Resistor 10k Ohm,Passive Components,200,190
+ECE-101,Capacitor 10uF,Passive Components,150,140
+ECE-101,Diode 1N4007,Semiconductors,100,90
+ECE-101,BJT BC547,Transistors,100,85
+ECE-101,Zener Diode 5.1V,Semiconductors,80,75
+ECE-202,TMS320C6748 DSP Kit,DSP Starter Kits,25,25
+ECE-202,Audio Jack Cables 3.5mm,Cables & Probes,40,40
+ECE-301,8086 Microprocessor Kit,Trainer Kits,30,28
+ECE-301,8051 Microcontroller Kit,Trainer Kits,30,30
+ECE-301,Stepper Motor Interface Module,Peripheral Modules,20,18
+ECE-401,Xilinx Spartan-6 FPGA Board,Development Boards,20,20
+ECE-401,USB JTAG Programmer Cable,Programmers,25,25
+ECE-401,CD4007 CMOS Transistor Array IC,Digital ICs,50,45
+ECE-401,74LS00 Quad 2-Input NAND Gate IC,Digital ICs,60,55
+ECE-401,74LS08 Quad 2-Input AND Gate IC,Digital ICs,60,55
+ECE-401,Seven Segment Display Module,Display Modules,30,28
+ECE-401,Jumper Wires Bundle (Male to Male),Cables & Probes,80,70
+

@@ -1,0 +1,13 @@
+experimentCode,componentName,quantityPerTeam
+ECE-EDC-01,Resistor 1k Ohm,1
+ECE-EDC-01,Diode 1N4007,1
+ECE-EDC-02,Resistor 1k Ohm,1
+ECE-EDC-02,Diode 1N4007,2
+ECE-EDC-02,Capacitor 10uF,1
+ECE-DSP-01,TMS320C6748 DSP Kit,1
+ECE-MPMC-01,8086 Microprocessor Kit,1
+ECE-VLSI-01,CD4007 CMOS Transistor Array IC,1
+ECE-VLSI-01,Jumper Wires Bundle (Male to Male),1
+ECE-VLSI-02,Xilinx Spartan-6 FPGA Board,1
+ECE-VLSI-02,USB JTAG Programmer Cable,1
+
