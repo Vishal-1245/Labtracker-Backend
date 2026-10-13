@@ -295,9 +295,15 @@ public class DataSeeder implements CommandLineRunner {
                 Role role = Role.valueOf(row.get(4));
                 boolean active = Boolean.parseBoolean(row.get(5));
                 boolean mustChangePassword = Boolean.parseBoolean(row.get(6));
+                String labRoomNo = row.size() > 7 ? row.get(7) : "";
+                Lab assignedLab = labRoomNo.isBlank()
+                        ? null
+                        : labRepository.findByRoomNo(labRoomNo).orElse(null);
 
-                if (!userRepository.existsByUsername(username)) {
-                    userRepository.save(new User(
+                User user = userRepository.findByUsername(username).orElse(null);
+                boolean newUser = user == null;
+                if (newUser) {
+                    user = new User(
                             username,
                             passwordEncoder.encode(password),
                             fullName,
@@ -305,7 +311,19 @@ public class DataSeeder implements CommandLineRunner {
                             role,
                             active,
                             mustChangePassword
-                    ));
+                    );
+                }
+                if (role == Role.LAB_ASSISTANT) {
+                    user.setRole(role);
+                    if (assignedLab != null && user.getLab() == null) {
+                        user.setLab(assignedLab);
+                    }
+                    userRepository.save(user);
+                } else if (role == Role.LAB_INCHARGE && assignedLab != null && user.getLab() == null) {
+                    user.setLab(assignedLab);
+                    userRepository.save(user);
+                } else if (newUser) {
+                    userRepository.save(user);
                 }
             }
         }

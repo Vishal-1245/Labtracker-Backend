@@ -7,7 +7,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 
 // User entity representing Students, Lab In-charges, and Admins
 @Entity
@@ -42,6 +45,16 @@ public class User {
     // Flag indicating if user (e.g. newly imported student) must change password upon next login
     @Column(name = "must_change_password", nullable = false)
     private boolean mustChangePassword = false;
+
+    @Column(name = "login_count", nullable = false)
+    private int loginCount = 0;
+
+    @Column(name = "last_login_at")
+    private LocalDateTime lastLoginAt;
+
+    @ManyToOne
+    @JoinColumn(name = "lab_id")
+    private Lab lab;
 
     // Default constructor required by JPA
     public User() {
@@ -132,5 +145,29 @@ public class User {
 
     public void setMustChangePassword(boolean mustChangePassword) {
         this.mustChangePassword = mustChangePassword;
+    }
+
+    public int getLoginCount() {
+        return loginCount;
+    }
+
+    public void setLoginCount(int loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    public LocalDateTime getLastLoginAt() {
+        return lastLoginAt;
+    }
+
+    public void setLastLoginAt(LocalDateTime lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
+    }
+
+    public Lab getLab() {
+        return lab;
+    }
+
+    public void setLab(Lab lab) {
+        this.lab = lab;
     }
 }

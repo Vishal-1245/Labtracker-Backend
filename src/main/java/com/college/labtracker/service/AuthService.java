@@ -1,6 +1,7 @@
 package com.college.labtracker.service;
 
 import java.util.Map;
+import java.time.LocalDateTime;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -52,10 +53,15 @@ public class AuthService {
             throw new DisabledException("Account is deactivated");
         }
 
+        user.setLoginCount(user.getLoginCount() + 1);
+        user.setLastLoginAt(LocalDateTime.now());
+        userRepository.save(user);
+
         // Generate JWT token containing username, role, and fullName claims
         String token = jwtService.generateToken(user.getUsername(), user.getRole().name(), user.getFullName());
 
-        return new LoginResponse(token, user.getRole().name(), user.getFullName(), user.getUsername(), user.isMustChangePassword());
+        Long assignedLabId = user.getLab() == null ? null : user.getLab().getId();
+        return new LoginResponse(token, user.getRole().name(), user.getFullName(), user.getUsername(), user.isMustChangePassword(), assignedLabId);
     }
 
     // Changes password for currently authenticated user and clears the mustChangePassword flag

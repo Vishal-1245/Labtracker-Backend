@@ -1,5 +1,6 @@
 package com.college.labtracker.dto.user;
 
+import java.time.LocalDateTime;
 import com.college.labtracker.entity.Role;
 
 // Response DTO containing public user information (excluding password hash)
@@ -12,6 +13,10 @@ public class UserResponse {
     private Role role;
     private boolean active;
     private boolean mustChangePassword;
+    private int loginCount;
+    private LocalDateTime lastLoginAt;
+    private Long labId;
+    private String labName;
 
     public UserResponse() {
     }
@@ -80,5 +85,37 @@ public class UserResponse {
 
     public void setMustChangePassword(boolean mustChangePassword) {
         this.mustChangePassword = mustChangePassword;
+    }
+
+    public int getLoginCount() {
+        return loginCount;
+    }
+
+    public void setLoginCount(int loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    public LocalDateTime getLastLoginAt() {
+        return lastLoginAt;
+    }
+
+    public void setLastLoginAt(LocalDateTime lastLoginAt) {
+        this.lastLoginAt = lastLoginAt;
+    }
+
+    public Long getLabId() {
+        return labId;
+    }
+
+    public void setLabId(Long labId) {
+        this.labId = labId;
+    }
+
+    public String getLabName() {
+        return labName;
+    }
+
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
 }

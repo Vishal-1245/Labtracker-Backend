@@ -30,6 +30,8 @@ public class UserRequest {
 
     private boolean mustChangePassword = false;
 
+    private Long labId;
+
     public UserRequest() {
     }
 
@@ -107,5 +109,13 @@ public class UserRequest {
 
     public void setMustChangePassword(boolean mustChangePassword) {
         this.mustChangePassword = mustChangePassword;
+    }
+
+    public Long getLabId() {
+        return labId;
+    }
+
+    public void setLabId(Long labId) {
+        this.labId = labId;
     }
 }

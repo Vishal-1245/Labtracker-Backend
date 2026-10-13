@@ -56,9 +56,10 @@ public class BookingController {
     public ResponseEntity<List<BookingResponse>> getAllBookings(
             @RequestParam(required = false) Long labId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-            @RequestParam(required = false) BookingStatus status
+            @RequestParam(required = false) BookingStatus status,
+            Principal principal
     ) {
-        return ResponseEntity.ok(bookingService.getAllBookings(labId, date, status));
+        return ResponseEntity.ok(bookingService.getAllBookings(labId, date, status, principal.getName()));
     }
 
     // PUT /api/bookings/{id}/cancel: Cancel an existing booking

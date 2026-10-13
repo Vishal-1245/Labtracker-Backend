@@ -4,5 +4,6 @@ package com.college.labtracker.entity;
 public enum Role {
     ADMIN,
     LAB_INCHARGE,
+    LAB_ASSISTANT,
     STUDENT
 }

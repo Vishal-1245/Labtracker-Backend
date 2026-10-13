@@ -22,7 +22,10 @@ import com.college.labtracker.dto.experiment.ExperimentRequest;
 import com.college.labtracker.dto.experiment.ExperimentResponse;
 import com.college.labtracker.dto.experiment.ExperimentStepRequest;
 import com.college.labtracker.dto.experiment.ExperimentStepResponse;
+import com.college.labtracker.dto.experiment.ExperimentSubmissionRequest;
+import com.college.labtracker.dto.experiment.ExperimentSubmissionResponse;
 import com.college.labtracker.service.ExperimentService;
+import com.college.labtracker.service.ExperimentSubmissionService;
 import jakarta.validation.Valid;
 
 // REST controller exposing practical lab experiments, instructions, and required apparatus
@@ -31,9 +34,11 @@ import jakarta.validation.Valid;
 public class ExperimentController {
 
     private final ExperimentService experimentService;
+    private final ExperimentSubmissionService submissionService;
 
-    public ExperimentController(ExperimentService experimentService) {
+    public ExperimentController(ExperimentService experimentService, ExperimentSubmissionService submissionService) {
         this.experimentService = experimentService;
+        this.submissionService = submissionService;
     }
 
     // GET /api/experiments: List experiments, optional filter by ?labId= (All authenticated users)
@@ -48,6 +53,16 @@ public class ExperimentController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ExperimentResponse> getExperimentById(@PathVariable Long id) {
         return ResponseEntity.ok(experimentService.getExperimentById(id));
+    }
+
+    @PostMapping("/{id}/submissions")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<ExperimentSubmissionResponse> submitResults(
+            @PathVariable Long id,
+            java.security.Principal principal,
+            @Valid @RequestBody ExperimentSubmissionRequest request
+    ) {
+        return new ResponseEntity<>(submissionService.submit(id, principal.getName(), request), HttpStatus.CREATED);
     }
 
     // POST /api/experiments: Create new curricular experiment (Faculty / In-charge / Admin)

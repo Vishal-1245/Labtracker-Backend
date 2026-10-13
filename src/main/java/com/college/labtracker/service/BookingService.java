@@ -35,19 +35,22 @@ public class BookingService {
     private final ExperimentRepository experimentRepository;
     private final EquipmentRepository equipmentRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     public BookingService(
             BookingRepository bookingRepository,
             LabRepository labRepository,
             ExperimentRepository experimentRepository,
             EquipmentRepository equipmentRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            NotificationService notificationService
     ) {
         this.bookingRepository = bookingRepository;
         this.labRepository = labRepository;
         this.experimentRepository = experimentRepository;
         this.equipmentRepository = equipmentRepository;
         this.userRepository = userRepository;
+        this.notificationService = notificationService;
     }
 
     public BookingResponse toResponse(Booking b) {
@@ -157,6 +160,7 @@ public class BookingService {
         );
 
         Booking saved = bookingRepository.save(booking);
+        notificationService.notifyBookingCreated(saved);
         return toResponse(saved);
     }
 
@@ -170,11 +174,22 @@ public class BookingService {
     }
 
     // Retrieve all bookings with optional filters (In-charge and Admin)
-    public List<BookingResponse> getAllBookings(Long labId, LocalDate date, BookingStatus status) {
+    public List<BookingResponse> getAllBookings(Long labId, LocalDate date, BookingStatus status, String currentUsername) {
         List<Booking> list = bookingRepository.findAll();
+        Long effectiveLabId = labId;
 
-        if (labId != null) {
-            list = list.stream().filter(b -> b.getLab().getId().equals(labId)).collect(Collectors.toList());
+        User currentUser = userRepository.findByUsername(currentUsername)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + currentUsername));
+        if (currentUser.getRole() == Role.LAB_ASSISTANT) {
+            if (currentUser.getLab() == null) {
+                return List.of();
+            }
+            effectiveLabId = currentUser.getLab().getId();
+        }
+
+        Long filterLabId = effectiveLabId;
+        if (filterLabId != null) {
+            list = list.stream().filter(b -> b.getLab().getId().equals(filterLabId)).collect(Collectors.toList());
         }
         if (date != null) {
             list = list.stream().filter(b -> b.getBookingDate().equals(date)).collect(Collectors.toList());

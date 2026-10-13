@@ -6,18 +6,22 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.college.labtracker.dto.user.UserImportSummary;
 import com.college.labtracker.dto.user.UserRequest;
 import com.college.labtracker.dto.user.UserResponse;
+import com.college.labtracker.entity.Lab;
 import com.college.labtracker.entity.Role;
 import com.college.labtracker.entity.User;
 import com.college.labtracker.exception.DuplicateResourceException;
 import com.college.labtracker.exception.ResourceNotFoundException;
+import com.college.labtracker.repository.LabRepository;
 import com.college.labtracker.repository.UserRepository;
 
 // Service providing user management operations and configurable roll number validation
@@ -25,6 +29,7 @@ import com.college.labtracker.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final LabRepository labRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${app.rollno-pattern:^[0-9]{2}[a-zA-Z]{2}[0-9]{3}[a-zA-Z][0-9]{2}$}")
@@ -33,14 +38,15 @@ public class UserService {
     @Value("${app.default-student-password:Student@123}")
     private String defaultStudentPassword;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, LabRepository labRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.labRepository = labRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     // Convert User entity to UserResponse DTO
     public UserResponse toResponse(User user) {
-        return new UserResponse(
+        UserResponse response = new UserResponse(
                 user.getId(),
                 user.getUsername(),
                 user.getFullName(),
@@ -49,6 +55,13 @@ public class UserService {
                 user.isActive(),
                 user.isMustChangePassword()
         );
+            response.setLoginCount(user.getLoginCount());
+            response.setLastLoginAt(user.getLastLoginAt());
+        if (user.getLab() != null) {
+            response.setLabId(user.getLab().getId());
+            response.setLabName(user.getLab().getName());
+        }
+        return response;
     }
 
     // Retrieve all users in the system (Admin only)
@@ -93,6 +106,7 @@ public class UserService {
                 request.isActive(),
                 request.isMustChangePassword()
         );
+        user.setLab(resolveLab(request));
 
         User savedUser = userRepository.save(user);
         return toResponse(savedUser);
@@ -121,6 +135,7 @@ public class UserService {
         user.setFullName(request.getFullName());
         user.setEmail(request.getEmail());
         user.setRole(request.getRole());
+        user.setLab(resolveLab(request));
         user.setActive(request.isActive());
         user.setMustChangePassword(request.isMustChangePassword());
 
@@ -131,6 +146,17 @@ public class UserService {
 
         User updatedUser = userRepository.save(user);
         return toResponse(updatedUser);
+    }
+
+    private Lab resolveLab(UserRequest request) {
+        if (request.getRole() != Role.LAB_INCHARGE && request.getRole() != Role.LAB_ASSISTANT) {
+            return null;
+        }
+        if (request.getLabId() == null) {
+            throw new IllegalArgumentException("A laboratory must be assigned to each lab staff account");
+        }
+        return labRepository.findById(request.getLabId())
+                .orElseThrow(() -> new ResourceNotFoundException("Lab not found with ID: " + request.getLabId()));
     }
 
     // Deactivate a user account without deleting records

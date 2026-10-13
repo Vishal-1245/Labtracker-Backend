@@ -1,10 +1,10 @@
-username,password,fullName,email,role,active,mustChangePassword
-admin,admin123,System Administrator,admin@anurag.edu.in,ADMIN,true,false
-incharge_edc,incharge123,Dr. K. Srinivas (EDC In-charge),srinivas.ece@anurag.edu.in,LAB_INCHARGE,true,false
-incharge_dsp,incharge123,Prof. M. Radhika (DSP In-charge),radhika.ece@anurag.edu.in,LAB_INCHARGE,true,false
-incharge_mpmc,incharge123,Dr. V. Ramesh (MPMC In-charge),ramesh.ece@anurag.edu.in,LAB_INCHARGE,true,false
-incharge_vlsi,incharge123,Dr. T. Anil Kumar (VLSI In-charge),anilkumar.ece@anurag.edu.in,LAB_INCHARGE,true,false
-assistant_vlsi,assistant123,Mr. P. Suresh (VLSI Lab Assistant),suresh.assistant@anurag.edu.in,LAB_INCHARGE,true,false
-24eg104e01,student123,A. Sai Teja,24eg104e01@anurag.edu.in,STUDENT,true,false
-24eg104e02,student123,B. Sravani,24eg104e02@anurag.edu.in,STUDENT,true,false
-24eg104e29,Student@123,C. Vishal Reddy,24eg104e29@anurag.edu.in,STUDENT,true,true
+username,password,fullName,email,role,active,mustChangePassword,labRoomNo
+admin,admin123,System Administrator,admin@anurag.edu.in,ADMIN,true,false,
+incharge_edc,incharge123,Dr. K. Srinivas (EDC In-charge),srinivas.ece@anurag.edu.in,LAB_INCHARGE,true,false,ECE-101
+incharge_dsp,incharge123,Prof. M. Radhika (DSP In-charge),radhika.ece@anurag.edu.in,LAB_INCHARGE,true,false,ECE-202
+incharge_mpmc,incharge123,Dr. V. Ramesh (MPMC In-charge),ramesh.ece@anurag.edu.in,LAB_INCHARGE,true,false,ECE-301
+incharge_vlsi,incharge123,Dr. T. Anil Kumar (VLSI In-charge),anilkumar.ece@anurag.edu.in,LAB_INCHARGE,true,false,ECE-401
+assistant_vlsi,assistant123,Mr. P. Suresh (VLSI Lab Assistant),suresh.assistant@anurag.edu.in,LAB_ASSISTANT,true,false,ECE-401
+24eg104e01,student123,A. Sai Teja,24eg104e01@anurag.edu.in,STUDENT,true,false,
+24eg104e02,student123,B. Sravani,24eg104e02@anurag.edu.in,STUDENT,true,false,
+24eg104e29,Student@123,C. Vishal Reddy,24eg104e29@anurag.edu.in,STUDENT,true,true,

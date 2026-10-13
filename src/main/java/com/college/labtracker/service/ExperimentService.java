@@ -82,7 +82,8 @@ public class ExperimentService {
                         c.getComponent().getId(),
                         c.getComponent().getName(),
                         c.getComponent().getCategory(),
-                        c.getQuantityPerTeam()))
+                        c.getQuantityPerTeam(),
+                        c.getComponent().getAvailableQuantity()))
                 .collect(Collectors.toList());
         response.setComponents(compResponses);
 

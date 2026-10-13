@@ -7,16 +7,22 @@ public class ExperimentComponentResponse {
     private String componentName;
     private String componentCategory;
     private int quantityPerTeam;
+    private int availableQuantity;
 
     public ExperimentComponentResponse() {
     }
 
     public ExperimentComponentResponse(Long id, Long componentId, String componentName, String componentCategory, int quantityPerTeam) {
+        this(id, componentId, componentName, componentCategory, quantityPerTeam, 0);
+    }
+
+    public ExperimentComponentResponse(Long id, Long componentId, String componentName, String componentCategory, int quantityPerTeam, int availableQuantity) {
         this.id = id;
         this.componentId = componentId;
         this.componentName = componentName;
         this.componentCategory = componentCategory;
         this.quantityPerTeam = quantityPerTeam;
+        this.availableQuantity = availableQuantity;
     }
 
     public Long getId() {
@@ -57,5 +63,13 @@ public class ExperimentComponentResponse {
 
     public void setQuantityPerTeam(int quantityPerTeam) {
         this.quantityPerTeam = quantityPerTeam;
+    }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(int availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 }
